@@ -509,131 +509,142 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 					 */
 					public function calculate_shipping( $package ) {
 						
-						if (array_values($package["contents"])[0]["data"]->has_weight()
-							&& array_values($package["contents"])[0]["data"]->has_dimensions())
-						{
-							
-							$allow_shipping = true;
-							$amount = 0.00;
-							
-							// Get product dimensions
-							$weight = array_values($package["contents"])[0]["data"]->get_weight();
-							$width = array_values($package["contents"])[0]["data"]->width;
-							$height = array_values($package["contents"])[0]["data"]->height;
-							$length = array_values($package["contents"])[0]["data"]->length;
-							
-							// Organize package sizes
-							$max = max($width, $height, $length);
-							$min = min($width, $height, $length);
-							$middle = $width + $height + $length - $max - $min;
-					
-							// Check to see if standard Canada Post can handle the package
-							if ($weight > 0.5) {
-								$allow_shipping = false;
-							}
-							
-							if ($max > 38 || $max <= 0.0) {
-								$allow_shipping = false;
-							}
-							
-							if ($middle > 27 || $middle <= 0.0) {
-								$allow_shipping = false;
-							}
-							
-							if ($min > 2 || $min <= 0.0) {
-								$allow_shipping = false;
-							}
-							
-							// If it doesn't fit then don't add a shipping rate
-							if (!$allow_shipping) {
-								return;
-							}
-							
-							// Calculate the shipping
-							switch ($package["destination"]["country"]) {
-								case 'CA':
-									if ($weight <= 0.03 && $max <= 24.5 && $middle <= 15.6 && $min <= 0.5) {
-										$amount = 1.00;
-										break;
-									}
-									if ($weight <= 0.05 && $max <= 24.5 && $middle <= 15.6 && $min <= 0.5) {
-										$amount = 1.20;
-										break;
-									}
-									if ($weight <= 0.1 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
-										$amount = 1.80;
-										break;
-									}
-									if ($weight <= 0.2 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
-										$amount = 2.95;
-										break;
-									}
-									if ($weight <= 0.3 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
-										$amount = 4.10;
-										break;
-									}
-									if ($weight <= 0.4 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
-										$amount = 4.70;
-										break;
-									}
-									if ($weight <= 0.5 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
-										$amount = 5.05;
-										break;
-									}
-									break;
-								case 'US':
-									if ($weight <= 0.03 && $max <= 24.5 && $middle <= 15.0 && $min <= 0.5) {
-										$amount = 1.20;
-										break;
-									}
-									if ($weight <= 0.05 && $max <= 24.5 && $middle <= 15.0 && $min <= 0.5) {
-										$amount = 1.60;
-										break;
-									}
-									if ($weight <= 0.1 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
-										$amount = 2.95;
-										break;
-									}
-									if ($weight <= 0.2 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
-										$amount = 5.15;
-										break;
-									}
-									if ($weight <= 0.3 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
-										$amount = 10.30;
-										break;
-									}
-									break;
-								default:
-									if ($weight <= 0.03 && $max <= 24.5 && $middle <= 15.0 && $min <= 0.5) {
-										$amount = 2.50;
-										break;
-									}
-									if ($weight <= 0.05 && $max <= 24.5 && $middle <= 15.0 && $min <= 0.5) {
-										$amount = 3.60;
-										break;
-									}
-									if ($weight <= 0.1 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
-										$amount = 5.90;
-										break;
-									}
-									if ($weight <= 0.2 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
-										$amount = 10.30;
-										break;
-									}
-									if ($weight <= 0.3 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
-										$amount = 20.60;
-										break;
-									}
-									break;
-							}
+						$contents = array_values($package["contents"]);					
+						$total = 0;
+						$allow_shipping = true;
 						
+						for ($i = 0; $i < count($contents); $i++)
+						{						
+							if ($contents[$i]["data"]->has_weight()
+								&& $contents[$i]["data"]->has_dimensions())
+							{
+								$amount = 0.00;
+							
+								// Get product dimensions
+								$weight = $contents[$i]["data"]->get_weight();
+								$width = $contents[$i]["data"]->width;
+								$height = $contents[$i]["data"]->height;
+								$length = $contents[$i]["data"]->length;
+							
+								// Organize package sizes
+								$max = max($width, $height, $length);
+								$min = min($width, $height, $length);
+								$middle = $width + $height + $length - $max - $min;
+					
+								// Check to see if standard Canada Post can handle the package
+								if ($weight > 0.5) {
+									$allow_shipping = false;
+								}
+							
+								if ($max > 38 || $max <= 0.0) {
+									$allow_shipping = false;
+								}
+							
+								if ($middle > 27 || $middle <= 0.0) {
+									$allow_shipping = false;
+								}
+							
+								if ($min > 2 || $min <= 0.0) {
+									$allow_shipping = false;
+								}
+							
+								// Calculate the shipping
+								switch ($package["destination"]["country"]) {
+									case 'CA':
+										if ($weight <= 0.03 && $max <= 24.5 && $middle <= 15.6 && $min <= 0.5) {
+											$amount = 1.00;
+											break;
+										}
+										if ($weight <= 0.05 && $max <= 24.5 && $middle <= 15.6 && $min <= 0.5) {
+											$amount = 1.20;
+											break;
+										}
+										if ($weight <= 0.1 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
+											$amount = 1.80;
+											break;
+										}
+										if ($weight <= 0.2 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
+											$amount = 2.95;
+											break;
+										}
+										if ($weight <= 0.3 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
+											$amount = 4.10;
+											break;
+										}
+										if ($weight <= 0.4 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
+											$amount = 4.70;
+											break;
+										}
+										if ($weight <= 0.5 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
+											$amount = 5.05;
+											break;
+										}
+										break;
+									case 'US':
+										if ($weight <= 0.03 && $max <= 24.5 && $middle <= 15.0 && $min <= 0.5) {
+											$amount = 1.20;
+											break;
+										}
+										if ($weight <= 0.05 && $max <= 24.5 && $middle <= 15.0 && $min <= 0.5) {
+											$amount = 1.60;
+											break;
+										}
+										if ($weight <= 0.1 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
+											$amount = 2.95;
+											break;
+										}
+										if ($weight <= 0.2 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
+											$amount = 5.15;
+											break;
+										}
+										if ($weight <= 0.3 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
+											$amount = 10.30;
+											break;
+										}
+										break;
+									default:
+										if ($weight <= 0.03 && $max <= 24.5 && $middle <= 15.0 && $min <= 0.5) {
+											$amount = 2.50;
+											break;
+										}
+										if ($weight <= 0.05 && $max <= 24.5 && $middle <= 15.0 && $min <= 0.5) {
+											$amount = 3.60;
+											break;
+										}
+										if ($weight <= 0.1 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
+											$amount = 5.90;
+											break;
+										}
+										if ($weight <= 0.2 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
+											$amount = 10.30;
+											break;
+										}
+										if ($weight <= 0.3 && $max <= 38.0 && $middle <= 27.0 && $min <= 2.0) {
+											$amount = 20.60;
+											break;
+										}
+										break;
+								}
+							
+								$total += $amount * $contents[$i]["quantity"];
+							}
+							else
+							{
+								$allow_shipping = false;
+							}
+						}
+						
+						echo $total;
+						
+						// If it doesn't fit then don't add a shipping rate
+						if ($allow_shipping) {
 							$rate = array(
 								'id' => $this->id,
 								'label' => $this->title,
-								'cost' => $amount,
+								'cost' => $total,
 								'calc_tax' => 'per_item'
 							);
-								
+
 							// Register the rate
 							$this->add_rate( $rate );
 						}
