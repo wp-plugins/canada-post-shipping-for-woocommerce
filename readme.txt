@@ -1,4 +1,4 @@
-=== Canada Post Shipping For WooCommerce By CanShip ===
+=== Canada Post Shipping For WooCommerce ===
 Contributors: canship
 Tags: shipping
 Requires at least: 3.0.1
