@@ -1,6 +1,6 @@
 === Canada Post Shipping For WooCommerce ===
 Contributors: canship
-Tags: shipping
+Tags: shipping, canada post, woocommerce
 Requires at least: 3.0.1
 Tested up to: 4.0.1
 Stable tag: trunk
@@ -28,7 +28,9 @@ More detailed instructions and help documents can be found on the
 
 == Screenshots ==
 
-1. Canada Post Shipping Rate Table
+1. Canadian Shipping Rates
+2. USA Shipping Rates
+3. International Shipping Rates
 
 == Changelog ==
 = 1.0.0 =
