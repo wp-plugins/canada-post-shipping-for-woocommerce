@@ -28,8 +28,8 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 					 */
 					public function __construct() {
 						$this->id                 = 'canada_post_shipping'; // Id for your shipping method. Should be uunique.
-						$this->method_title       = __( 'Canada Post Shipping' );  // Title shown in admin
-						$this->method_description = __( 'Canada post shipping lets you automatically calculate Canada post shipping rates. <br /><br /> If item sizes fit within the listed dimensions and weights then this shipping option will be presented to the buyers during the checkout. <br /><br /> These prices are standard mailing rates that are posted by Canada Post. <br /><br />If you need help or have questions please feel free to send an email to <a href="mailto:nalidixic@gmail.com">nalidixic@gmail.com.</a>' ); // Description shown in admin
+						$this->method_title       = __( 'Canada Post Shipping For WooCommerce' );  // Title shown in admin
+						$this->method_description = __( 'This plugin lets you automatically calculate Canada Post shipping rates. <br /><br /> If you need help with the plugin the best place to get support is our website. <br /><br /><a href="http://www.canadianshippingcalculator.com/">Visit our website here for support</a>'); // Description shown in admin
 						$this->title = 'Canada Post';
 
 						$this->init();
@@ -633,9 +633,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 								$allow_shipping = false;
 							}
 						}
-						
-						echo $total;
-						
+												
 						// If it doesn't fit then don't add a shipping rate
 						if ($allow_shipping) {
 							$rate = array(

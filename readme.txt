@@ -33,5 +33,8 @@ More detailed instructions and help documents can be found on the
 3. International Shipping Rates
 
 == Changelog ==
+= 1.0.1 =
+Modified content on the settings page.
+
 = 1.0.0 =
 Initial Release
