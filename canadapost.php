@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Canada Post Shipping For WooCommerce By CanShip
 * Description: Adds Canada Post shipping rates to WooCommerce 
-* Version: 1.0.1
+* Version: 1.0.2
 * Author: CanShip
 */
 
