@@ -34,6 +34,43 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 
 						$this->init();
 					}
+					
+					function get_normalized_weight($weight) {
+						$woo_weight_unit = strtolower(get_option('woocommerce_weight_unit'));
+						
+						if ($woo_weight_unit != 'kg') {
+							switch ($woo_weight_unit) {
+								case 'g':
+									$weight *= 0.001;
+									break;
+								case 'lbs':
+									$weight *= 0.4353;
+									break;
+							}
+						}
+						
+						return $weight;
+					}
+					
+					function get_normalized_dimension($dimension) {
+						$woo_dimension_unit = strtolower(get_option('woocommerce_dimension_unit'));
+						
+						if ($woo_dimension_unit != 'cm') {
+							switch ($woo_dimension_unit) {
+								case 'in':
+									$dimension *= 2.54;
+									break;
+								case 'm':
+									$dimension *= 100;
+									break;
+								case 'mm':
+									$dimension *= 0.1;
+									break;
+							}
+						}
+
+						return $dimension;
+					}
 				
 					/**
 					 * Init your settings
@@ -521,10 +558,12 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 								$amount = 0.00;
 							
 								// Get product dimensions
-								$weight = $contents[$i]["data"]->get_weight();
-								$width = $contents[$i]["data"]->width;
-								$height = $contents[$i]["data"]->height;
-								$length = $contents[$i]["data"]->length;
+								$weight = $this->get_normalized_weight($contents[$i]["data"]->get_weight());
+								$width = $this->get_normalized_dimension($contents[$i]["data"]->width);
+								$height = $this->get_normalized_dimension($contents[$i]["data"]->height);
+								$length = $this->get_normalized_dimension($contents[$i]["data"]->length);
+								
+								echo(get_option('woocommerce_dimension_unit'));
 							
 								// Organize package sizes
 								$max = max($width, $height, $length);

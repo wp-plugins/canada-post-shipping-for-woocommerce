@@ -2,7 +2,7 @@
 Contributors: canship
 Tags: shipping, canada post, woocommerce
 Requires at least: 3.0.1
-Tested up to: 4.0.1
+Tested up to: 4.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -33,6 +33,9 @@ More detailed instructions and help documents can be found on the
 3. International Shipping Rates
 
 == Changelog ==
+= 1.0.2 =
+Support for multiple weights and dimension units in WooCommerce.
+
 = 1.0.1 =
 Modified content on the settings page.
 
