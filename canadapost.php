@@ -29,7 +29,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 					public function __construct() {
 						$this->id                 = 'canada_post_shipping'; // Id for your shipping method. Should be uunique.
 						$this->method_title       = __( 'Canada Post Shipping For WooCommerce' );  // Title shown in admin
-						$this->method_description = __( 'This plugin lets you automatically calculate Canada Post shipping rates. <br /><br /> If you need help with the plugin the best place to get support is our website. <br /><br /><a href="http://www.canadianshippingcalculator.com/">Visit our website here for support</a>'); // Description shown in admin
+						$this->method_description = __( 'This plugin lets you automatically calculate Canada Post shipping rates. <br /><br /> If you need help with the plugin the best place to get support is our website. <br /><br /><a href="http://www.woocrunch.com/frequently-asked-questions-free/">Visit our website here for support</a>'); // Description shown in admin
 						$this->title = 'Canada Post';
 
 						$this->init();
